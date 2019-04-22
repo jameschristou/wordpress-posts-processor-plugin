@@ -1,0 +1,1 @@
+call lessc "management-page.less" "management-page.css" --clean-css="--s1"

@@ -1,0 +1,65 @@
+.posts-processor{
+    th.num{
+        width:50px;
+    }
+    
+    th.post-id{
+        width:100px;
+    }
+    
+    th.network-id{
+        width:130px;
+    }
+    
+    th.push-time{
+        width:200px;
+    }
+    
+    th,td{
+        border: 1px solid #dddddd;
+    }
+    
+    tr:nth-of-type(odd) {
+        background-color: #f9f9f9;
+    }
+    
+    .progress{
+        margin: 10px 0;
+        
+        .status{
+            font-weight:bold;
+        }
+        
+        .spinner{
+            font-size: 14px;
+            float: none;
+            visibility: visible;
+            margin: 0 0 4px 4px;
+        }
+    }
+    
+    .panel {
+        padding:4px 0;
+    }
+    
+    .file-info{
+        padding: 0 0 6px 0;
+
+        label{
+            display:inline;
+            padding-right:10px;
+        }
+
+        input{
+            width:350px;
+        }
+    }
+}
+
+.posts-processor.stopped{
+    .progress{
+        .spinner{
+            display: none;
+        }
+    }
+}
