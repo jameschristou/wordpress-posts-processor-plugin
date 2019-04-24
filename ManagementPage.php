@@ -36,8 +36,8 @@ class ManagementPage
             return;
         }
         
-        wp_enqueue_script('jamescPostsProcessor', plugins_url('management-page.js', __FILE__), array());
-        wp_enqueue_style('jamescPostsProcessor', plugins_url('management-page.css',  __FILE__), array() );
+        wp_enqueue_script('jamescPostsProcessor', plugins_url('dist/bundle.js', __FILE__), array());
+        wp_enqueue_style('jamescPostsProcessor', plugins_url('dist/style.css',  __FILE__), array());
     }
     
     public function ManagementPageHtml()
