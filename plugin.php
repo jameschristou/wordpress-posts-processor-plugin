@@ -11,9 +11,12 @@ namespace jamesc\plugins\postsProcessor;
 require_once 'CustomCapabilities.php';
 require_once 'ManagementPage.php';
 require_once 'PostsToProcessRepository.php';
+require_once 'RestEndpoints.php';
 
 class EntryPoint{
     static public function register(){
+        new RestEndpoints();
+
         if (!is_admin()) {
             // only load this stuff if the user is on the admin pages
             return;
