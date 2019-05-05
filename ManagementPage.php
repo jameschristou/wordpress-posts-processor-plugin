@@ -36,7 +36,7 @@ class ManagementPage
             return;
         }
         
-        wp_enqueue_script('jamescPostsProcessor', plugins_url('dist/bundle.js', __FILE__), array());
+        wp_enqueue_script('jamescPostsProcessor', plugins_url('dist/bundle.js', __FILE__), array(), true);
         wp_enqueue_style('jamescPostsProcessor', plugins_url('dist/style.css',  __FILE__), array());
     }
     
@@ -63,9 +63,7 @@ class ManagementPage
     
     private function RenderProcessingHtml($total){
         ?>
-        <div class="panel file-info">
-            <label>Processing Class Name:</label><input id="processing-class-name" type="text" name="processing-class-name" />
-        </div>
+        <div id="posts-processor-container"></div>
         <div class="panel">
             <input id="start-process" class="button button-primary" type="submit" name="start-process" value="Start" />
             <input id="stop-process" class="button button-primary disabled" type="submit" name="stop-process" value="Stop" />
