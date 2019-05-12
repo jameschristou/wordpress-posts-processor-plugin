@@ -2,13 +2,13 @@ import React from 'react';
 
 const ProcessedPostsComponent = (props) => {
   return (
-    <div class="processed-posts">
+    <div className="processed-posts">
         <table>
             <thead>
                 <tr>
-                    <th class="num"></th>
-                    <th class="post-id">PostId</th>
-                    <th class="time-processed">Time Processed</th>
+                    <th className="num"></th>
+                    <th className="post-id">PostId</th>
+                    <th className="time-processed">Time Processed</th>
                   </tr>
             </thead>
             <tbody>
