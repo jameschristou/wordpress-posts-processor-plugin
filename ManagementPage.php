@@ -64,7 +64,7 @@ class ManagementPage
     private function RenderProcessingHtml($total){
         ?>
         <div id="posts-processor-container"></div>
-        <div class="panel">
+        <!-- <div class="panel">
             <input id="start-process" class="button button-primary" type="submit" name="start-process" value="Start" />
             <input id="stop-process" class="button button-primary disabled" type="submit" name="stop-process" value="Stop" />
         </div>
@@ -87,7 +87,7 @@ class ManagementPage
                 <tbody>
                 </tbody>
             </table>
-        </div>
+        </div> -->
         <?php
     }
 }
