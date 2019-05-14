@@ -19,8 +19,6 @@ const ProcessorSelectorComponent = (props) => {
         options.push({value: processor, name: processor});
       })
 
-      console.log(options);
-
       setState(options);
     };
 
