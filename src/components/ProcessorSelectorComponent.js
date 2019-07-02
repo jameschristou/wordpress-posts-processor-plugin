@@ -1,5 +1,6 @@
-import React, {useState, useEffect, useReducer } from 'react';
+import React, {useState, useEffect, useReducer, useContext } from 'react';
 import axios from 'axios';
+import { ConfigContext } from "./App";
 
 const processorSelectedReducer = (state, action) => {
   switch (action) {
@@ -19,11 +20,13 @@ const ProcessorSelectorComponent = (props) => {
   const [state, setState] = useState([{'value': 'default', 'name': 'Choose a Processor'}]);
   const [processorSelectedState, dispatchProcessorSelected] = useReducer(processorSelectedReducer, 'NO_PROCESSOR_SELECTED');
 
+  const context = useContext(ConfigContext);
+
   // initialise state. This code will only run when the component mounts
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios(
-        'http://localhost:8100/wp-json/posts-processor/v1/processors',
+        `${context.apiBaseUrl}posts-processor/v1/processors`,
       );
       
       // clone the current state (initial state)...state is immutable so can't modify it directly
