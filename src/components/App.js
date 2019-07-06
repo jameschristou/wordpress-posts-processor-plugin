@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
 import ProcessorSelectorComponent from './ProcessorSelectorComponent';
-import StatusComponent from './StatusComponent';
-import StartStopComponent from './StartStopComponent';
-import ProcessedPostsComponent from './ProcessedPostsComponent';
+import ProcessingComponent from './ProcessingComponent';
 
 export const ConfigContext = React.createContext();
 
@@ -13,15 +11,13 @@ const configValue = {
 const AppComponent = (props) => {
   const [currentProcessor, setProcessor] = useState('');
 
-  /* #region Main */
-  const processorSelectedHandler = (e, favoriteValue) => {
+  /* #region Handlers */
+  const processorSelectedHandler = (e) => {
     e.preventDefault();
-    // const sessionId = parseInt(e.target.attributes["data-sessionid"].value);
-    // dispatch({
-    //   type: favoriteValue === true ? "favorite" : "unfavorite",
-    //   sessionId
-    // });
-    console.log('Processor changed');
+
+    console.log('Processor changed: ' + e.target.value);
+
+    setProcessor(e.target.value == "default" ? "" : e.target.value);
   };
 
   /* #endregion */
@@ -30,9 +26,7 @@ const AppComponent = (props) => {
     <div className="posts-processor-app">
       <ConfigContext.Provider value={configValue} >
         <ProcessorSelectorComponent processorSelectedHandler={processorSelectedHandler}/>
-        <StatusComponent />
-        <StartStopComponent />
-        <ProcessedPostsComponent />
+        <ProcessingComponent currentlySelectedProcessor={currentProcessor}/>
       </ConfigContext.Provider>
     </div>
   );

@@ -32,7 +32,7 @@ const ProcessorSelectorComponent = ({processorSelectedHandler}) => {
         <label>Processor</label>
         <select id="processor-name" type="text" name="processor-name" onChange={processorSelectedHandler}>
           {processorListOptions.map((option) =>
-              <option key={option.value}>{option.name}</option>
+              <option value={option.value} key={option.value}>{option.name}</option>
           )}
         </select>
     </div>
