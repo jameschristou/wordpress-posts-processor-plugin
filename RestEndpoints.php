@@ -80,7 +80,7 @@ class RestEndpoints
         // instantiate the class which will be used to process the post. This class must have a constructor which
         // accepts a post object and must have a public function called process() which will perform the processing
         // and return the processing result. The returned 
-        $processorClass = new $processorClassFullName($post);
+        $processorClass = new $processorClassFullName();
         $result = $processorClass->processPosts($postsToProcess);
         
         $postIds = array_column($postsToProcess, 'post_id');
