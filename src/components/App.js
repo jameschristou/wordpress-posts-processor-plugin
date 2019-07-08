@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import ProcessorSelectorComponent from './ProcessorSelectorComponent';
-import ProcessingComponent from './ProcessingComponent';
+import ProcessedPostsComponent from './ProcessedPostsComponent';
 
 export const ConfigContext = React.createContext();
 
@@ -26,7 +26,7 @@ const AppComponent = (props) => {
     <div className="posts-processor-app">
       <ConfigContext.Provider value={configValue} >
         <ProcessorSelectorComponent processorSelectedHandler={processorSelectedHandler}/>
-        <ProcessingComponent currentlySelectedProcessor={currentProcessor}/>
+        <ProcessedPostsComponent processor={currentProcessor}/>
       </ConfigContext.Provider>
     </div>
   );
