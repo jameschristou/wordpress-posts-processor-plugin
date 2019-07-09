@@ -7,6 +7,7 @@ import StartStopComponent from './StartStopComponent';
 const ProcessedPostsComponent = ({processor}) => {
   const [processedPosts, setProcessedPosts] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [numPostsProcessed, setNumPostsProcessed] = useState(0);
 
   /* #region Handlers */
   const startStopProcessingHandler = (val) => {
@@ -28,6 +29,8 @@ const ProcessedPostsComponent = ({processor}) => {
   }, [isProcessing, processedPosts]);
 
   const processNextSetOfPosts = async () => {
+    console.log('Calling API to process next set of posts');
+
     const result = await axios.post(
       `${context.apiBaseUrl}posts-processor/v1/processors?processorName=${processor}`
     );
@@ -37,6 +40,8 @@ const ProcessedPostsComponent = ({processor}) => {
       setIsProcessing(false);
       return;
     }
+
+    setNumPostsProcessed(numPostsProcessed + result.data.processedPosts.length);
     
     // clone the current state (initial state)...state is immutable so can't modify it directly
     let posts = [...processedPosts];
@@ -51,7 +56,7 @@ const ProcessedPostsComponent = ({processor}) => {
   return (
     <React.Fragment>
       <StartStopComponent isEnabled={processor != ''} isProcessing={isProcessing} startStopProcessingHandler={startStopProcessingHandler}/>
-      <StatusComponent />
+      <StatusComponent numPostsProcessed={numPostsProcessed}/>
       <div className="processed-posts">
           <table>
               <thead>

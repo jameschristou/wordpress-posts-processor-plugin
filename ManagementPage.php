@@ -50,12 +50,7 @@ class ManagementPage
     <div class="wrap nosubsub posts-processor stopped">
         <h2>Posts Processor</h2>
     <?php
-        if(empty($total)){
-            echo("<div>No posts to process</div>");
-        }
-        else{
-            $this->RenderProcessingHtml($total[0]);
-        }
+        $this->RenderProcessingHtml($total);
     ?>
     </div>
     <?php

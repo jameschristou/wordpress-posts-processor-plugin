@@ -26,12 +26,29 @@ class RestEndpoints
                 'callback'            => array( $this, 'processPosts' )
                 ),
             ) );
+
+        register_rest_route( $namespace, '/posts-to-process', array(
+            array(
+                'methods'             => 'GET',
+                'callback'            => array( $this, 'getPostsToProcess' )
+                ),
+            ) );
     }
 
     public function getProcessors(){
         $processors = array("processors" => array("BatchPostProcessor", "ProcessPost"));
 
         return $processors;
+    }
+
+    public function getPostsToProcess(){
+        $totalPosts = PostsToProcessRepository::getTotalPostsToProcess();
+
+        $response = array(
+            "totalPosts" => $totalPosts
+        );
+
+        wp_send_json($response);
     }
 
     public function processPosts()

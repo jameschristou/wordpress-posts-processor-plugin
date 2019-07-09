@@ -54,7 +54,9 @@ class PostsToProcessRepository{
             FROM " . self::getTablename() . "
             WHERE processed = 0";
         
-        return $wpdb->get_results($sql, ARRAY_A);
+        $result = $wpdb->get_results($sql, ARRAY_A);
+
+        return $result[0]["Total"];
     }
 
     public static function createTable(){
