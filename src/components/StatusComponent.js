@@ -21,11 +21,11 @@ const StatusComponent = ({numPostsProcessed}) => {
   }, []);
 
   return (
-    <div className="panel">
-        <span>Posts Remaining: </span><span className="total-remaining">{numPostsProcessed}</span><span>/{totalPosts}</span>
-        <div className="progress">
+    <div className="status">
+        <span>Posts Remaining: </span><span>{numPostsProcessed}</span><span>/{totalPosts}</span>
+        {/* <div className="status__progress">
             <span className="status"></span><span className="spinner"><img src='images/spinner.gif' /></span>
-        </div>
+        </div> */}
     </div>
   );
 }

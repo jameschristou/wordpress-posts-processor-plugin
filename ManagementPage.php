@@ -4,7 +4,6 @@ namespace jamesc\plugins\postsProcessor;
 
 require_once 'CustomCapabilities.php';
 require_once 'AjaxEndpoints.php';
-require_once 'PostsToProcessRepository.php';
 
 class ManagementPage
 {
@@ -42,47 +41,11 @@ class ManagementPage
     
     public function ManagementPageHtml()
     {
-        global $wpdb;
-        
-        $total = PostsToProcessRepository::getTotalPostsToProcess();
-
     ?>
     <div class="wrap nosubsub posts-processor stopped">
         <h2>Posts Processor</h2>
-    <?php
-        $this->RenderProcessingHtml($total);
-    ?>
+        <div id="posts-processor-container"></div>
     </div>
     <?php
-    }
-    
-    private function RenderProcessingHtml($total){
-        ?>
-        <div id="posts-processor-container"></div>
-        <!-- <div class="panel">
-            <input id="start-process" class="button button-primary" type="submit" name="start-process" value="Start" />
-            <input id="stop-process" class="button button-primary disabled" type="submit" name="stop-process" value="Stop" />
-        </div>
-        <div class="panel">
-            <span>Remaining: </span><span class="total-remaining"><?php echo($total['Total']) ?></span><span>/<?php echo($total['Total']) ?></span>
-        </div>
-        <div class="progress">
-            <span class="status"></span><span class="spinner"><img src='images/spinner.gif' /></span>
-        </div>
-        <div class="processed-posts">
-            <table>
-                <thead>
-                    <tr>
-                        <th class="num"></th>
-                        <th class="post-id">PostId</th>
-                        <th class="network-id">NetworkId</th>
-                        <th class="time-processed">Time Processed</th>
-                     </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div> -->
-        <?php
     }
 }

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { ConfigContext } from "./App";
 import StatusComponent from './StatusComponent';
 import StartStopComponent from './StartStopComponent';
+import ProcessedPostComponent from './ProcessedPostComponent';
 
 const ProcessedPostsComponent = ({processor}) => {
   const [processedPosts, setProcessedPosts] = useState([]);
@@ -40,17 +41,21 @@ const ProcessedPostsComponent = ({processor}) => {
       setIsProcessing(false);
       return;
     }
-
-    setNumPostsProcessed(numPostsProcessed + result.data.processedPosts.length);
     
     // clone the current state (initial state)...state is immutable so can't modify it directly
     let posts = [...processedPosts];
 
-    result.data.processedPosts.forEach(processedPost => {
-      posts.push({postId: processedPost.postId, processedDateTime: processedPost.processed});
+    result.data.processedPosts.forEach((processedPost, index) => {
+      posts.push({
+        postNum: numPostsProcessed + index + 1,
+        postId: processedPost.postId, 
+        processedDateTime: processedPost.processed,
+
+      });
     })
 
     setProcessedPosts(posts);
+    setNumPostsProcessed(numPostsProcessed + result.data.processedPosts.length);
   };
 
   return (
@@ -61,13 +66,24 @@ const ProcessedPostsComponent = ({processor}) => {
           <table>
               <thead>
                   <tr>
-                      <th className="num"></th>
-                      <th className="post-id">PostId</th>
-                      <th className="time-processed">Time Processed</th>
+                      <th className="processed-posts__postnum"></th>
+                      <th className="processed-posts__postid">PostId</th>
+                      <th className="processed-posts__datetime">Time Processed</th>
                     </tr>
               </thead>
               <tbody>
               </tbody>
+              {processedPosts.map(
+                ({ postNum, postId, processedDateTime }) => {
+                  return (
+                    <ProcessedPostComponent
+                      postNum={postNum}
+                      postId={postId}
+                      processedDateTime={processedDateTime}
+                    />
+                  );
+                }
+              )}
           </table>
       </div>
     </React.Fragment>

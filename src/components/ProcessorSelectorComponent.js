@@ -28,9 +28,9 @@ const ProcessorSelectorComponent = ({processorSelectedHandler}) => {
   }, []);
 
   return (
-    <div className="panel file-info">
-        <label>Processor</label>
-        <select id="processor-name" type="text" name="processor-name" onChange={processorSelectedHandler}>
+    <div className="processor-selector">
+        <label className="processor-selector__label">Processor</label>
+        <select className="processor-selector__dropdown" id="processor-name" type="text" name="processor-name" onChange={processorSelectedHandler}>
           {processorListOptions.map((option) =>
               <option value={option.value} key={option.value}>{option.name}</option>
           )}

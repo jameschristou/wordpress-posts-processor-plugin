@@ -1,69 +1,46 @@
 .posts-processor{
-    th.num{
-        width:50px;
+    .processed-posts{
+        &__postnum{
+            width:50px;
+        }
+
+        &__postid{
+            width:100px;
+        }
+
+        &__datetime{
+            width:200px;
+        }
+
+        th,td{
+            border: 1px solid #dddddd;
+        }
+        
+        tr:nth-of-type(odd) {
+            background-color: #f9f9f9;
+        }
     }
     
-    th.post-id{
-        width:100px;
-    }
-    
-    th.network-id{
-        width:130px;
-    }
-    
-    th.push-time{
-        width:200px;
-    }
-    
-    th,td{
-        border: 1px solid #dddddd;
-    }
-    
-    tr:nth-of-type(odd) {
-        background-color: #f9f9f9;
-    }
-    
-    .progress{
+    .status{
         margin: 10px 0;
-        
-        .status{
-            font-weight:bold;
-        }
-        
-        .spinner{
-            font-size: 14px;
-            float: none;
-            visibility: visible;
-            margin: 0 0 4px 4px;
-        }
     }
     
     .panel {
         padding:4px 0;
     }
     
-    .file-info{
+    .processor-selector{
         padding: 0 0 6px 0;
 
-        label{
+        &__label{
             display:inline;
             padding-right:10px;
         }
-
-        input{
-            width:350px;
-        }
     }
 
-    #stop-process{
-        margin-left:5px;
-    }
-}
-
-.posts-processor.stopped{
-    .progress{
-        .spinner{
-            display: none;
+    .start-stop{
+        &__start{
+            margin-right:5px;
         }
     }
 }
