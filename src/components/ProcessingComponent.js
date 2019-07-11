@@ -5,14 +5,11 @@ import ProcessedPostsComponent from './ProcessedPostsComponent';
 const ProcessingComponent = ({currentlySelectedProcessor}) => {
   const [isProcessing, setIsProcessing] = useState(false);
 
-  /* #region Handlers */
   const startStopProcessingHandler = (val) => {
     console.log('Button clicked: ' + val);
 
     setIsProcessing(val == 'start');
   };
-
-  /* #endregion */
 
   return (
     <React.Fragment>

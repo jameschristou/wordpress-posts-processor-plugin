@@ -42,7 +42,7 @@ class ManagementPage
     public function ManagementPageHtml()
     {
     ?>
-    <div class="wrap nosubsub posts-processor stopped">
+    <div class="wrap nosubsub posts-processor">
         <h2>Posts Processor</h2>
         <div id="posts-processor-container"></div>
     </div>

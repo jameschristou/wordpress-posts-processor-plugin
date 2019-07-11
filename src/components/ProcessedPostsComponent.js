@@ -62,7 +62,7 @@ const ProcessedPostsComponent = ({processor}) => {
     <React.Fragment>
       <StartStopComponent isEnabled={processor != ''} isProcessing={isProcessing} startStopProcessingHandler={startStopProcessingHandler}/>
       <StatusComponent numPostsProcessed={numPostsProcessed}/>
-      <div className="processed-posts">
+      <div className={'processed-posts processed-posts--' + (numPostsProcessed > 0 ? 'visible' : 'hidden')}>
           <table>
               <thead>
                   <tr>

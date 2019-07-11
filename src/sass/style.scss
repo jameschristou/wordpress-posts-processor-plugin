@@ -1,7 +1,9 @@
 .posts-processor{
     .processed-posts{
         &__postnum{
-            width:50px;
+            width:70px;
+            border:none;
+            background-color:#f1f1f1;
         }
 
         &__postid{
@@ -12,12 +14,19 @@
             width:200px;
         }
 
-        th,td{
+        &__postid,
+        &__datetime,
+        td{
+            text-align: center;
             border: 1px solid #dddddd;
         }
         
         tr:nth-of-type(odd) {
             background-color: #f9f9f9;
+        }
+
+        &--hidden{
+            display:none;
         }
     }
     
