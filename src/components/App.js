@@ -5,7 +5,7 @@ import ProcessedPostsComponent from './ProcessedPostsComponent';
 export const ConfigContext = React.createContext();
 
 const configValue = {
-  apiBaseUrl: 'http://localhost:8100/wp-json/'
+  apiBaseUrl: '/wp-json/'
 };
 
 const AppComponent = (props) => {

@@ -8,7 +8,6 @@ import ProcessedPostComponent from './ProcessedPostComponent';
 const ProcessedPostsComponent = ({processor}) => {
   const [processedPosts, setProcessedPosts] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [numPostsProcessed, setNumPostsProcessed] = useState(0);
 
   /* #region Handlers */
   const startStopProcessingHandler = (val) => {
@@ -45,45 +44,46 @@ const ProcessedPostsComponent = ({processor}) => {
     // clone the current state (initial state)...state is immutable so can't modify it directly
     let posts = [...processedPosts];
 
+    var currentNumPostsProcessed = posts.length;
+
     result.data.processedPosts.forEach((processedPost, index) => {
       posts.push({
-        postNum: numPostsProcessed + index + 1,
-        postId: processedPost.postId, 
-        processedDateTime: processedPost.processed,
-
+        rowNum: currentNumPostsProcessed + index + 1,
+        postId: processedPost.postId,
+        processedDateTime: processedPost.processed
       });
     })
 
     setProcessedPosts(posts);
-    setNumPostsProcessed(numPostsProcessed + result.data.processedPosts.length);
   };
 
   return (
     <React.Fragment>
       <StartStopComponent isEnabled={processor != ''} isProcessing={isProcessing} startStopProcessingHandler={startStopProcessingHandler}/>
-      <StatusComponent numPostsProcessed={numPostsProcessed}/>
-      <div className={'processed-posts processed-posts--' + (numPostsProcessed > 0 ? 'visible' : 'hidden')}>
+      <StatusComponent numPostsProcessed={processedPosts.length}/>
+      <div className={'processed-posts processed-posts--' + (processedPosts.length > 0 ? 'visible' : 'hidden')}>
           <table>
               <thead>
                   <tr>
-                      <th className="processed-posts__postnum"></th>
-                      <th className="processed-posts__postid">PostId</th>
-                      <th className="processed-posts__datetime">Time Processed</th>
-                    </tr>
+                    <th className="processed-posts__postnum"></th>
+                    <th className="processed-posts__postid">PostId</th>
+                    <th className="processed-posts__datetime">Time Processed</th>
+                  </tr>
               </thead>
               <tbody>
-              </tbody>
               {processedPosts.map(
-                ({ postNum, postId, processedDateTime }) => {
+                ({ rowNum, postId, processedDateTime }) => {
                   return (
                     <ProcessedPostComponent
-                      postNum={postNum}
+                      key={rowNum}
+                      rowNum={rowNum}
                       postId={postId}
                       processedDateTime={processedDateTime}
                     />
                   );
                 }
               )}
+              </tbody>
           </table>
       </div>
     </React.Fragment>
