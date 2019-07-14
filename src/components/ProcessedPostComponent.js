@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {memo} from 'react';
 
-const ProcessedPostComponent = ({rowNum, postId, processedDateTime}) => {
+const ProcessedPostComponent = memo(({rowNum, postId, processedDateTime}) => {
   console.log("Rendering row:" + rowNum);
 
   return (
     <tr><td>{rowNum}</td><td>{postId}</td><td>{processedDateTime}</td></tr>
   );
-}
+});
 
 export default ProcessedPostComponent;
