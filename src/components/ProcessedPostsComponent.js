@@ -3,13 +3,48 @@ import axios from 'axios';
 import { ConfigContext } from "./App";
 import StatusComponent from './StatusComponent';
 import StartStopComponent from './StartStopComponent';
-import ProcessedPostComponent from './ProcessedPostComponent';
+import ProcessedPostsBatchComponent from './ProcessedPostsBatchComponent';
+
+/*
+processedPostsBatches structure:
+totalRows int
+batches [] array of batches
+*/
+
+function reducer(state, action) {
+  if (action.type === 'FETCHING') {
+    // do nothing for now
+    return {...state};
+  }
+  else if (action.type === 'FETCH_SUCCESS') {
+    let processedBatches = {...state};
+
+    var currentNumPostsProcessed = processedBatches.totalPostsProcessed;
+
+    let newBatch = [];
+
+    action.processedPosts.forEach((processedPost, index) => {
+      newBatch.push({
+        rowNum: currentNumPostsProcessed + index + 1,
+        postId: processedPost.postId,
+        processedDateTime: processedPost.processed
+      });
+    });
+
+    processedBatches.batches.push(newBatch);
+    processedBatches.totalPostsProcessed += newBatch.length;
+
+    return processedBatches;
+  } else {
+    throw new Error();  
+  }
+}
 
 const ProcessedPostsComponent = ({processor}) => {
   //const [processedPosts, setProcessedPosts] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const [processedPosts, dispatch] = useReducer(reducer, []);
+  const [processedPostsBatches, dispatch] = useReducer(reducer, { totalPostsProcessed: 0, batches:[] });
 
   // FETCH_SUCCESS
 
@@ -22,45 +57,17 @@ const ProcessedPostsComponent = ({processor}) => {
   processNextPosts will live in the parent ProcessedPostsComponent and it will be passed as a prop to ProcessedPostsBatchComponent
   */
 
-  function reducer(state, action) {
-    if (action.type === 'FETCHING') {
-      // do nothing for now
-      return [...state];
-    }
-    else if (action.type === 'FETCH_SUCCESS') {
-      let posts = [...state];
-
-      var currentNumPostsProcessed = posts.length;
-
-      action.processedPosts.forEach((processedPost, index) => {
-        posts.push({
-          rowNum: currentNumPostsProcessed + index + 1,
-          postId: processedPost.postId,
-          processedDateTime: processedPost.processed
-        });
-      });
-
-      return posts;
-    } else {
-      throw new Error();
-    }
-  }
+  
 
   /* #region Handlers */
   const startStopProcessingHandler = (val) => {
-    console.log('Button clicked: ' + val);
+    console.log('Start/Stop button clicked: ' + val);
 
     setIsProcessing(val == 'start');
 
     if(val == 'start'){
-      process();
+      startFetchingPosts();
     }
-  };
-
-  const process = async () => {
-    //dispatch('FETCHING');
-    let processedPosts = await processNextSetOfPosts();
-    dispatch({ type: 'FETCH_SUCCESS', processedPosts: processedPosts });
   };
 
   const context = useContext(ConfigContext);
@@ -75,42 +82,33 @@ const ProcessedPostsComponent = ({processor}) => {
   //   process();
   // }, [isProcessing, processedPosts]);
 
-  const processNextSetOfPosts = async () => {
+  const startFetchingPosts = async () => {
     console.log('Calling API to process next set of posts');
 
     const result = await axios.post(
       `${context.apiBaseUrl}posts-processor/v1/processors?processorName=${processor}`
     );
 
-    return result.data.processedPosts;
+    dispatch({ type: 'FETCH_SUCCESS', processedPosts: result.data.processedPosts });
+  };
 
-    // if(result.data.processedPosts.length == 0){
-    //   console.log('No more posts to process');
-    //   setIsProcessing(false);
-    //   return;
-    // }
-    
-    // clone the current state (initial state)...state is immutable so can't modify it directly
-    // let posts = [...processedPosts];
+  const fetchNextSetOfPosts = async () => {
+    if(!isProcessing) return;
 
-    // var currentNumPostsProcessed = posts.length;
+    console.log('Calling API to process next set of posts');
 
-    // result.data.processedPosts.forEach((processedPost, index) => {
-    //   posts.push({
-    //     rowNum: currentNumPostsProcessed + index + 1,
-    //     postId: processedPost.postId,
-    //     processedDateTime: processedPost.processed
-    //   });
-    // })
+    const result = await axios.post(
+      `${context.apiBaseUrl}posts-processor/v1/processors?processorName=${processor}`
+    );
 
-    // setProcessedPosts(posts);
+    dispatch({ type: 'FETCH_SUCCESS', processedPosts: result.data.processedPosts });
   };
 
   return (
     <React.Fragment>
       <StartStopComponent isEnabled={processor != ''} isProcessing={isProcessing} startStopProcessingHandler={startStopProcessingHandler}/>
-      <StatusComponent numPostsProcessed={processedPosts.length}/>
-      <div className={'processed-posts processed-posts--' + (processedPosts.length > 0 ? 'visible' : 'hidden')}>
+      <StatusComponent numPostsProcessed={processedPostsBatches.totalPostsProcessed}/>
+      <div className={'processed-posts processed-posts--' + (processedPostsBatches.totalPostsProcessed > 0 ? 'visible' : 'hidden')}>
           <table>
               <thead>
                   <tr>
@@ -120,14 +118,14 @@ const ProcessedPostsComponent = ({processor}) => {
                   </tr>
               </thead>
               <tbody>
-              {processedPosts.map(
-                ({ rowNum, postId, processedDateTime }) => {
+              {processedPostsBatches.batches.map(
+                (processedPostsBatch, index) => {
                   return (
-                    <ProcessedPostComponent
-                      key={rowNum}
-                      rowNum={rowNum}
-                      postId={postId}
-                      processedDateTime={processedDateTime}
+                    <ProcessedPostsBatchComponent
+                      key={index}
+                      batchNum={index}
+                      processedPosts={processedPostsBatch}
+                      fetchNextSetOfPosts={fetchNextSetOfPosts}
                     />
                   );
                 }
