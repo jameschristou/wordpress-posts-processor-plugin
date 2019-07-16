@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext, useReducer} from 'react';
+import React, {useState, useEffect, useContext, useReducer, useCallback} from 'react';
 import axios from 'axios';
 import { ConfigContext } from "./App";
 import StatusComponent from './StatusComponent';
@@ -41,23 +41,11 @@ function reducer(state, action) {
 }
 
 const ProcessedPostsComponent = ({processor}) => {
-  //const [processedPosts, setProcessedPosts] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
 
   const [processedPostsBatches, dispatch] = useReducer(reducer, { totalPostsProcessed: 0, batches:[] });
 
-  // FETCH_SUCCESS
-
-  // NEW Strategy
-  /*
-  - Create a new component called ProcessedPostsBatchComponent. It will encapsulate all the items for a single API call
-  - Move the reducer outside of the ProcessedPostsComponent so it is available to other components
-  - When start is clicked we start creating ProcessedPostsBatchComponents in the map instead of ProcessedPostComponents (keep in mind the key to avoid re-renders!)
-  - The important thing will be the useEffect of the ProcessedPostsBatchComponent! It will need to make a call to processNextPosts (which will then call dispatch).
-  processNextPosts will live in the parent ProcessedPostsComponent and it will be passed as a prop to ProcessedPostsBatchComponent
-  */
-
-  
+  const context = useContext(ConfigContext);
 
   /* #region Handlers */
   const startStopProcessingHandler = (val) => {
@@ -70,20 +58,8 @@ const ProcessedPostsComponent = ({processor}) => {
     }
   };
 
-  const context = useContext(ConfigContext);
-
-  // useEffect(() => {
-  //   console.log('UseEffect called');
-  //   const process = async () => {
-  //     if(!isProcessing) return;
-  //     await processNextSetOfPosts();
-  //   };
-
-  //   process();
-  // }, [isProcessing, processedPosts]);
-
   const startFetchingPosts = async () => {
-    console.log('Calling API to process next set of posts');
+    console.log('Calling API to process first set of posts');
 
     const result = await axios.post(
       `${context.apiBaseUrl}posts-processor/v1/processors?processorName=${processor}`
@@ -92,17 +68,11 @@ const ProcessedPostsComponent = ({processor}) => {
     dispatch({ type: 'FETCH_SUCCESS', processedPosts: result.data.processedPosts });
   };
 
-  const fetchNextSetOfPosts = async () => {
-    if(!isProcessing) return;
-
-    console.log('Calling API to process next set of posts');
-
-    const result = await axios.post(
-      `${context.apiBaseUrl}posts-processor/v1/processors?processorName=${processor}`
-    );
-
-    dispatch({ type: 'FETCH_SUCCESS', processedPosts: result.data.processedPosts });
-  };
+  // pass the dispatch function as a parameter to the Batch component rather than passing the fetchNextSetOfPosts function
+  // move fetchNextSetOfPosts to the batch component
+  // pass the isProcessing parameter as an extra prop to the batch component
+  // the batch component can access the context to get the baseurl
+  // this should prevent rerender from occurring
 
   return (
     <React.Fragment>
@@ -123,9 +93,11 @@ const ProcessedPostsComponent = ({processor}) => {
                   return (
                     <ProcessedPostsBatchComponent
                       key={index}
+                      isProcessing={isProcessing}
                       batchNum={index}
                       processedPosts={processedPostsBatch}
-                      fetchNextSetOfPosts={fetchNextSetOfPosts}
+                      dispatch={dispatch}
+                      processor={processor}
                     />
                   );
                 }
