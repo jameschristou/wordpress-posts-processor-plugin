@@ -11,41 +11,45 @@ totalRows int
 batches [] array of batches
 */
 
-function reducer(state, action) {
-  if (action.type === 'FETCHING') {
-    // do nothing for now
-    return {...state};
-  }
-  else if (action.type === 'FETCH_SUCCESS') {
-    let processedBatches = {...state};
-
-    var currentNumPostsProcessed = processedBatches.totalPostsProcessed;
-
-    let newBatch = [];
-
-    action.processedPosts.forEach((processedPost, index) => {
-      newBatch.push({
-        rowNum: currentNumPostsProcessed + index + 1,
-        postId: processedPost.postId,
-        processedDateTime: processedPost.processed
-      });
-    });
-
-    processedBatches.batches.push(newBatch);
-    processedBatches.totalPostsProcessed += newBatch.length;
-
-    return processedBatches;
-  } else {
-    throw new Error();  
-  }
-}
-
 const ProcessedPostsComponent = ({processor}) => {
   const [isProcessing, setIsProcessing] = useState(false);
-
+  const [isFinishedProcessing, setIsFinishedProcessing] = useState(false); // tells us whether all posts have been processed
   const [processedPostsBatches, dispatch] = useReducer(reducer, { totalPostsProcessed: 0, batches:[] });
 
   const context = useContext(ConfigContext);
+
+  function reducer(state, action) {
+    if (action.type === 'FETCHING') {
+      // do nothing for now
+      return {...state};
+    }
+    else if (action.type === 'FETCH_SUCCESS') {
+      let processedBatches = {...state};
+  
+      var currentNumPostsProcessed = processedBatches.totalPostsProcessed;
+  
+      let newBatch = [];
+  
+      action.processedPosts.forEach((processedPost, index) => {
+        newBatch.push({
+          rowNum: currentNumPostsProcessed + index + 1,
+          postId: processedPost.postId,
+          processedDateTime: processedPost.processed
+        });
+      });
+  
+      processedBatches.batches.push(newBatch);
+      processedBatches.totalPostsProcessed += newBatch.length;
+  
+      return processedBatches;
+    } else if(action.type === 'FINISHED'){
+      setIsFinishedProcessing(true);
+      setIsProcessing(false);
+      return {...state};
+    } else {
+      throw new Error();  
+    }
+  }
 
   /* #region Handlers */
   const startStopProcessingHandler = (val) => {
@@ -65,6 +69,11 @@ const ProcessedPostsComponent = ({processor}) => {
       `${context.apiBaseUrl}posts-processor/v1/processors?processorName=${processor}`
     );
 
+    if(result.data.numProcessedPosts == 0){
+      console.log('No posts available for processing');
+      dispatch({type: 'FINISHED'});
+    }
+
     dispatch({ type: 'FETCH_SUCCESS', processedPosts: result.data.processedPosts });
   };
 
@@ -76,7 +85,7 @@ const ProcessedPostsComponent = ({processor}) => {
 
   return (
     <React.Fragment>
-      <StartStopComponent isEnabled={processor != ''} isProcessing={isProcessing} startStopProcessingHandler={startStopProcessingHandler}/>
+      <StartStopComponent isEnabled={processor != '' && !isFinishedProcessing} isProcessing={isProcessing} startStopProcessingHandler={startStopProcessingHandler}/>
       <StatusComponent numPostsProcessed={processedPostsBatches.totalPostsProcessed}/>
       <div className={'processed-posts processed-posts--' + (processedPostsBatches.totalPostsProcessed > 0 ? 'visible' : 'hidden')}>
           <table>

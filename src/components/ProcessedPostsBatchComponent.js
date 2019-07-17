@@ -22,6 +22,11 @@ const ProcessedPostsBatchComponent = memo(({isProcessing, batchNum, processedPos
       `${context.apiBaseUrl}posts-processor/v1/processors?processorName=${processor}`
     );
 
+    if(result.data.processedPosts.length == 0){
+      console.log('No more posts available for processing');
+      dispatch({type: 'FINISHED'});
+    }
+
     dispatch({ type: 'FETCH_SUCCESS', processedPosts: result.data.processedPosts });
   };
 
