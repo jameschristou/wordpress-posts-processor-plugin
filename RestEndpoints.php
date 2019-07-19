@@ -36,9 +36,18 @@ class RestEndpoints
     }
 
     public function getProcessors(){
-        $processors = array("processors" => array("BatchPostProcessor", "ProcessPost"));
+        $processors = array("BatchPostProcessor", "ProcessPost");
 
-        return $processors;
+        $additionalProcessors = apply_filters( 'posts_processor_custom_processors');
+
+        if(!empty($additionalProcessors)){
+            $processors = array_merge($processors, $additionalProcessors);
+        }
+
+        // register additional processors by using
+        // add_filter('posts_processor_custom_processors', array($this, 'updateMetaData'), 10, 3);
+
+        return array("processors" => $processors);
     }
 
     public function getPostsToProcess(){
