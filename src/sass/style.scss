@@ -40,14 +40,24 @@
     
     .processor-selector{
         padding: 0 0 6px 0;
+    }
 
+    .processor-selector,
+    .batch-size{
         &__label{
-            display:inline;
-            padding-right:10px;
+            display:inline-block;
+            width:80px;
+        }
+
+        &__dropdown,
+        &__input{
+            width:200px;
         }
     }
 
     .start-stop{
+        margin-top: 10px;
+
         &__start{
             margin-right:5px;
         }
