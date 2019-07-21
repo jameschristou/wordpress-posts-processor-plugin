@@ -69,6 +69,8 @@ class RestEndpoints
         
         // the class name of the processor and the filename that it lives in need to be the same
         $processorClassName = $_REQUEST["processorName"];
+
+        $batchSize = empty($_REQUEST["batchSize"]) ? 1 : $_REQUEST["batchSize"];
         
         // try loading the file. Its in the processors folder below the current folder
         // TODO: extend this functionality so that other developers can write their own processors and host them anywhere
@@ -78,7 +80,7 @@ class RestEndpoints
         $processorClassFullName = "jamesc\\plugins\\postsProcessor\\processors\\" . $processorClassName;
 
         // get the next item to process
-        $postsToProcess = PostsToProcessRepository::getPosts(10);
+        $postsToProcess = PostsToProcessRepository::getPosts($batchSize);
         
         if(empty($postsToProcess)){
             wp_send_json(array(

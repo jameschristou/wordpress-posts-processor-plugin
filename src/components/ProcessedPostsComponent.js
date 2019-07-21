@@ -11,7 +11,7 @@ totalRows int
 batches [] array of batches
 */
 
-const ProcessedPostsComponent = ({processor}) => {
+const ProcessedPostsComponent = ({processor, batchSize}) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isFinishedProcessing, setIsFinishedProcessing] = useState(false); // tells us whether all posts have been processed
   const [processedPostsBatches, dispatch] = useReducer(reducer, { totalPostsProcessed: 0, batches:[] });
@@ -66,7 +66,7 @@ const ProcessedPostsComponent = ({processor}) => {
     console.log('Calling API to process first set of posts');
 
     const result = await axios.post(
-      `${context.apiBaseUrl}posts-processor/v1/processors?processorName=${processor}`
+      `${context.apiBaseUrl}posts-processor/v1/processors?processorName=${processor}&batchSize=${batchSize}`
     );
 
     if(result.data.numProcessedPosts == 0){
@@ -107,6 +107,7 @@ const ProcessedPostsComponent = ({processor}) => {
                       processedPosts={processedPostsBatch}
                       dispatch={dispatch}
                       processor={processor}
+                      batchSize={batchSize}
                     />
                   );
                 }

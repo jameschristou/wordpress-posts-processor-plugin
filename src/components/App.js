@@ -39,7 +39,7 @@ const AppComponent = (props) => {
       <ConfigContext.Provider value={configValue} >
         <ProcessorSelectorComponent processorSelectedHandler={processorSelectedHandler}/>
         <BatchSizeComponent batchSize={batchSize} dispatch={dispatch}/>
-        <ProcessedPostsComponent processor={currentProcessor}/>
+        <ProcessedPostsComponent processor={currentProcessor} batchSize={batchSize}/>
       </ConfigContext.Provider>
     </div>
   );

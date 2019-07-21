@@ -3,7 +3,7 @@ import axios from 'axios';
 import { ConfigContext } from "./App";
 import ProcessedPostComponent from './ProcessedPostComponent';
 
-const ProcessedPostsBatchComponent = memo(({isProcessing, batchNum, processedPosts, dispatch, processor}) => {
+const ProcessedPostsBatchComponent = memo(({isProcessing, batchNum, processedPosts, dispatch, processor, batchSize}) => {
   const context = useContext(ConfigContext);
 
   useEffect(() => {
@@ -19,10 +19,10 @@ const ProcessedPostsBatchComponent = memo(({isProcessing, batchNum, processedPos
     console.log('Calling API to process posts for batch:' + batchNum);
 
     const result = await axios.post(
-      `${context.apiBaseUrl}posts-processor/v1/processors?processorName=${processor}`
+      `${context.apiBaseUrl}posts-processor/v1/processors?processorName=${processor}&batchSize=${batchSize}`
     );
 
-    if(result.data.processedPosts.length == 0){
+    if(result.data.numProcessedPosts == 0){
       console.log('No more posts available for processing');
       dispatch({type: 'FINISHED'});
     }
