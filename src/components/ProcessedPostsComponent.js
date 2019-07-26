@@ -88,12 +88,12 @@ const ProcessedPostsComponent = ({processor, batchSize}) => {
       <StartStopComponent isEnabled={processor != '' && !isFinishedProcessing} isProcessing={isProcessing} startStopProcessingHandler={startStopProcessingHandler}/>
       <StatusComponent numPostsProcessed={processedPostsBatches.totalPostsProcessed}/>
       <div className={'processed-posts processed-posts--' + (processedPostsBatches.totalPostsProcessed > 0 ? 'visible' : 'hidden')}>
-          <table>
+          <table className="processed-posts__table">
               <thead>
                   <tr>
-                    <th className="processed-posts__postnum"></th>
-                    <th className="processed-posts__postid">PostId</th>
-                    <th className="processed-posts__datetime">Time Processed</th>
+                    <th className="processed-posts__postnum processed-posts__heading"></th>
+                    <th className="processed-posts__postid processed-posts__heading">PostId</th>
+                    <th className="processed-posts__datetime processed-posts__heading">Time Processed</th>
                   </tr>
               </thead>
               <tbody>

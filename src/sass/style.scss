@@ -28,6 +28,19 @@
         &--hidden{
             display:none;
         }
+
+        .processed-posts__table{
+            tbody,
+            thead tr{
+                display:block;
+            }
+
+            tbody{
+                height: 200px;
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
+        }
     }
     
     .status{

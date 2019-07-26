@@ -4,7 +4,7 @@ const ProcessedPostComponent = memo(({rowNum, postId, processedDateTime}) => {
   console.log("Rendering row:" + rowNum);
 
   return (
-    <tr><td>{rowNum}</td><td>{postId}</td><td>{processedDateTime}</td></tr>
+    <tr><td className="processed-posts__postnum">{rowNum}</td><td className="processed-posts__postid">{postId}</td><td className="processed-posts__datetime">{processedDateTime}</td></tr>
   );
 });
 
