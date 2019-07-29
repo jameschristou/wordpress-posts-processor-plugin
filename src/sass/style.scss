@@ -3,7 +3,10 @@
         &__postnum{
             width:70px;
             border:none;
-            background-color:#f1f1f1;
+
+            &-heading{
+                background-color:#f1f1f1;
+            }
         }
 
         &__postid{
@@ -14,32 +17,36 @@
             width:200px;
         }
 
-        &__postid,
-        &__datetime,
-        td{
-            text-align: center;
-            border: 1px solid #dddddd;
-        }
-        
-        tr:nth-of-type(odd) {
-            background-color: #f9f9f9;
+        tbody{
+            tr:nth-of-type(odd) {
+                background-color: #f9f9f9;
+            }
+
+            td{
+                text-align: center;
+                border: 1px solid #dddddd;
+            }
         }
 
         &--hidden{
             display:none;
         }
 
-        .processed-posts__table{
+        &__table{
             tbody,
             thead tr{
                 display:block;
             }
 
             tbody{
-                height: 200px;
+                height: 300px;
                 overflow-y: auto;
                 overflow-x: hidden;
             }
+        }
+
+        &__postid-heading{
+            padding: 0 0 0 4px;
         }
     }
     

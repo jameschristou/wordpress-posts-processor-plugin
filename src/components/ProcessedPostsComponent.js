@@ -91,9 +91,9 @@ const ProcessedPostsComponent = ({processor, batchSize}) => {
           <table className="processed-posts__table">
               <thead>
                   <tr>
-                    <th className="processed-posts__postnum processed-posts__heading"></th>
-                    <th className="processed-posts__postid processed-posts__heading">PostId</th>
-                    <th className="processed-posts__datetime processed-posts__heading">Time Processed</th>
+                    <th className="processed-posts__postnum processed-posts__postnum-heading"></th>
+                    <th className="processed-posts__postid processed-posts__postid-heading">PostId</th>
+                    <th className="processed-posts__datetime processed-posts__datetime-heading">Time Processed</th>
                   </tr>
               </thead>
               <tbody>
