@@ -39,7 +39,9 @@
             }
 
             tbody{
-                height: 300px;
+                height:60vh;
+                min-height:150px;
+                max-height: 600px;
                 overflow-y: auto;
                 overflow-x: hidden;
             }

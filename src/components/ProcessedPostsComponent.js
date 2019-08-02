@@ -4,12 +4,15 @@ import { ConfigContext } from "./App";
 import StatusComponent from './StatusComponent';
 import StartStopComponent from './StartStopComponent';
 import ProcessedPostsBatchComponent from './ProcessedPostsBatchComponent';
+import {FETCHING, FETCH_SUCCESS, FINISHED} from './ProcessedPostsReducer.Actions';
 
 /*
 processedPostsBatches structure:
 totalRows int
 batches [] array of batches
 */
+
+
 
 const ProcessedPostsComponent = ({processor, batchSize}) => {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -19,11 +22,11 @@ const ProcessedPostsComponent = ({processor, batchSize}) => {
   const context = useContext(ConfigContext);
 
   function reducer(state, action) {
-    if (action.type === 'FETCHING') {
+    if (action.type === FETCHING) {
       // do nothing for now
       return {...state};
     }
-    else if (action.type === 'FETCH_SUCCESS') {
+    else if (action.type === FETCH_SUCCESS) {
       let processedBatches = {...state};
   
       var currentNumPostsProcessed = processedBatches.totalPostsProcessed;
@@ -42,7 +45,7 @@ const ProcessedPostsComponent = ({processor, batchSize}) => {
       processedBatches.totalPostsProcessed += newBatch.length;
   
       return processedBatches;
-    } else if(action.type === 'FINISHED'){
+    } else if(action.type === FINISHED){
       setIsFinishedProcessing(true);
       setIsProcessing(false);
       return {...state};
@@ -71,10 +74,10 @@ const ProcessedPostsComponent = ({processor, batchSize}) => {
 
     if(result.data.numProcessedPosts == 0){
       console.log('No posts available for processing');
-      dispatch({type: 'FINISHED'});
+      dispatch({type: FINISHED});
     }
 
-    dispatch({ type: 'FETCH_SUCCESS', processedPosts: result.data.processedPosts });
+    dispatch({ type: FETCH_SUCCESS, processedPosts: result.data.processedPosts });
   };
 
   // pass the dispatch function as a parameter to the Batch component rather than passing the fetchNextSetOfPosts function
