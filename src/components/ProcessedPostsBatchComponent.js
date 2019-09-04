@@ -9,7 +9,7 @@ const ProcessedPostsBatchComponent = memo(({isProcessing, batchNum, processedPos
 
   useEffect(() => {
     // the idea is that after we have finished rendering this batch then we should get the next set of posts
-    console.log('ProcessedPostsBatchComponent UseEffect called for batch:' + batchNum);
+    console.log('ProcessedPostsBatchComponent useEffect called for batch:' + batchNum);
 
     fetchNextSetOfPosts();
   }, []);
@@ -36,13 +36,11 @@ const ProcessedPostsBatchComponent = memo(({isProcessing, batchNum, processedPos
   return (
     <React.Fragment>
       {processedPosts.map(
-        ({ rowNum, postId, processedDateTime }) => {
+        p => {
           return (
             <ProcessedPostComponent
-              key={rowNum}
-              rowNum={rowNum}
-              postId={postId}
-              processedDateTime={processedDateTime}
+              key={p.rowNum}
+              post={p}
             />
           );
         }

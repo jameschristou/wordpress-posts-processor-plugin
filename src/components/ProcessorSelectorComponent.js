@@ -18,7 +18,7 @@ const ProcessorSelectorComponent = ({processorSelectedHandler}) => {
       let options = [...processorListOptions];
 
       result.data.processors.forEach(processor => {
-        options.push({value: processor, name: processor});
+        options.push({value: processor.name, name: processor.name});
       })
 
       setProcessorListOptions(options);
