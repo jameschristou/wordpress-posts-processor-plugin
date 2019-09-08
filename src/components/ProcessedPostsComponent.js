@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext, useReducer, useCallback} from 'react';
 import axios from 'axios';
 import { ConfigContext } from "./App";
-import StatusComponent from './StatusComponent';
+import InfoComponent from './InfoComponent';
 import StartStopComponent from './StartStopComponent';
 import ProcessedPostsBatchComponent from './ProcessedPostsBatchComponent';
 import {FETCHING, FETCH_SUCCESS, FINISHED} from './ProcessedPostsReducer.Actions';
@@ -89,7 +89,7 @@ const ProcessedPostsComponent = ({processor, batchSize}) => {
   return (
     <React.Fragment>
       <StartStopComponent isEnabled={processor != '' && !isFinishedProcessing} isProcessing={isProcessing} startStopProcessingHandler={startStopProcessingHandler}/>
-      <StatusComponent numPostsProcessed={processedPostsBatches.totalPostsProcessed}/>
+      <InfoComponent numPostsProcessed={processedPostsBatches.totalPostsProcessed}/>
       <div className={'processed-posts processed-posts--' + (processedPostsBatches.totalPostsProcessed > 0 ? 'visible' : 'hidden')}>
           <table className="processed-posts__table">
               <thead>

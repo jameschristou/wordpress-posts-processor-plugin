@@ -3,7 +3,6 @@
 namespace jamesc\plugins\postsProcessor;
 
 require_once 'CustomCapabilities.php';
-require_once 'AjaxEndpoints.php';
 
 class ManagementPage
 {
@@ -16,7 +15,6 @@ class ManagementPage
         }
         
         add_action('admin_menu', array($this, 'initMenu'));
-        add_action('admin_init', array($this, 'initAjax'));
     }
 
     public function initMenu(){
@@ -25,10 +23,6 @@ class ManagementPage
         add_action('current_screen', array($this, 'enqueueJs'));
     }
 
-    public function initAjax(){
-        new AjaxEndpoints();
-    }
-    
     public function enqueueJs($currentScreen){
         // ensure the script is only loaded on the required page
         if($currentScreen->id != "toplevel_page_" . $this->pageName){

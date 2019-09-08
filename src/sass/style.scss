@@ -52,10 +52,6 @@
         }
     }
     
-    .status{
-        margin: 10px 0;
-    }
-    
     .panel {
         padding:4px 0;
     }
@@ -83,5 +79,9 @@
         &__start{
             margin-right:5px;
         }
+    }
+
+    .info{
+        margin: 10px 0;
     }
 }
