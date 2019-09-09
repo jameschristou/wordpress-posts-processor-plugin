@@ -33,6 +33,23 @@ class RestEndpoints
                 'callback'            => array( $this, 'getPostsToProcess' )
                 ),
             ) );
+
+        register_rest_route( $namespace, '/init-data', array(
+            array(
+                'methods'             => 'GET',
+                'callback'            => array( $this, 'getInitData' )
+                ),
+            ) );
+    }
+
+    public function getInitData(){
+        $processors = $this->getProcessors();
+        $totalPosts = PostsToProcessRepository::getTotalPostsToProcess();
+
+        $response = array("processors" => $processors['processors'],
+                    "totalPosts" => $totalPosts);
+
+        wp_send_json($response);
     }
 
     public function getProcessors(){

@@ -11,7 +11,7 @@ const ProcessorSelectorComponent = ({processorSelectedHandler}) => {
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios(
-        `${context.apiBaseUrl}posts-processor/v1/processors`,
+        `${context.apiBaseUrl}posts-processor/v1/init-data`,
       );
       
       // clone the current state (initial state)...state is immutable so can't modify it directly
