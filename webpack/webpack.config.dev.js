@@ -8,9 +8,8 @@ module.exports = {
     new Dotenv({
       path: './.env.development',
     }),
-    new MiniCssExtractPlugin({
-      filename: '[name].css',
-      chunkFilename: '[id].css',
+    new MiniCssExtractPlugin({ 
+      filename: '../dist/style.css'
     })
   ],
   module: {
@@ -19,13 +18,7 @@ module.exports = {
         test: /\.s?css$/,
         use: [
           {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              // only enable hot in development
-              hmr: true,
-              // if hmr does not work, this is a forceful method.
-              reloadAll: true,
-            },
+            loader: MiniCssExtractPlugin.loader
           },
           'css-loader',
           'sass-loader'

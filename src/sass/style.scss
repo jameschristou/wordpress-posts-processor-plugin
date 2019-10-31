@@ -10,10 +10,14 @@
         }
 
         &__postid{
-            width:100px;
+            width:80px;
         }
 
         &__datetime{
+            width:150px;
+        }
+
+        &__data{
             width:200px;
         }
 
@@ -23,7 +27,7 @@
             }
 
             td{
-                text-align: center;
+                text-align: top;
                 border: 1px solid #dddddd;
             }
         }

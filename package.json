@@ -4,7 +4,7 @@
   "description": "Wordpress plugin which allows you to run custom code on a set/all of your wordpress posts. For example if you need to update each post in some custom way",
   "main": "src/index.js",
   "scripts": {
-    "dev": "webpack-dev-server --config webpack/webpack.config.js --env.env=dev",
+    "dev": "webpack --watch --config webpack/webpack.config.js --env.env=dev",
     "build": "webpack --config webpack/webpack.config.js --env.env=prod"
   },
   "repository": {

@@ -99,5 +99,5 @@ insert into wp_posts_to_process
 (post_id, processed, update_date_utc)
 SELECT id, 0, '2019-04-22'
 FROM `wp_posts` p
-WHERE post_type = 'post' AND post_status = 'publish'
+WHERE post_type = 'post' AND (post_status = 'publish' OR post_status = 'private')
  */

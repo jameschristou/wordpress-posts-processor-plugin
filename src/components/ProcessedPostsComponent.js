@@ -37,7 +37,8 @@ const ProcessedPostsComponent = ({processor, batchSize}) => {
         newBatch.push({
           rowNum: currentNumPostsProcessed + index + 1,
           postId: processedPost.postId,
-          processedDateTime: processedPost.processed
+          processedDateTime: processedPost.processedDateTime,
+          data: processedPost.data
         });
       });
   
@@ -97,6 +98,7 @@ const ProcessedPostsComponent = ({processor, batchSize}) => {
                     <th className="processed-posts__postnum processed-posts__postnum-heading"></th>
                     <th className="processed-posts__postid processed-posts__postid-heading">PostId</th>
                     <th className="processed-posts__datetime processed-posts__datetime-heading">Time Processed</th>
+                    <th className="processed-posts__data processed-posts__data-heading">Data</th>
                   </tr>
               </thead>
               <tbody>

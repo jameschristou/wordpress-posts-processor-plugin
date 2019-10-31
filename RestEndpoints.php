@@ -6,11 +6,34 @@ require_once 'PostsToProcessRepository.php';
 
 class RestEndpoints
 {
+    private $processors;
+
     public function __construct() {
-        add_action('rest_api_init', array($this, 'registerRoutes'));
+        // low priority so that anyone implementing custom processors can register them before
+        // filter is run
+        add_action('rest_api_init', array($this, 'registerRoutes'), 100);
+    }
+
+    private function loadProcessors(){
+        $defaultProcessors = array(
+            "BatchPostProcessor" => array(
+                    "displayName" => "BatchPostProcessor", 
+                    "className" => "jamesc\\plugins\\postsProcessor\\processors\\BatchPostProcessor",
+                    "classFilePath" => plugin_dir_path(__FILE__) . "processors/BatchPostProcessor.php"
+            ),
+            "ProcessPost" => array(
+                    "displayName" => "ProcessPost",
+                    "className" => "jamesc\\plugins\\postsProcessor\\processors\\ProcessPost",
+                    "classFilePath" => plugin_dir_path(__FILE__) . "processors/ProcessPost.php"
+            )
+        );
+
+        $this->processors = apply_filters('posts_processor_custom_processors', $defaultProcessors);
     }
 
     public function registerRoutes(){
+        $this->loadProcessors();
+
         $namespace = 'posts-processor/v1';
 
         register_rest_route( $namespace, '/processors', array(
@@ -53,18 +76,7 @@ class RestEndpoints
     }
 
     public function getProcessors(){
-        $processors = array(
-            array("name" => "BatchPostProcessor", "fieldNames" => array("PostId", "DateTime")),
-            array("name" => "ProcessPost", "fieldNames" => array("PostId", "DateTime"))
-        );
-
-        $additionalProcessors = apply_filters( 'posts_processor_custom_processors');
-
-        // the filter should return an object with -> name and fieldNames -> [array of field names]
-
-        if(!empty($additionalProcessors)){
-            $processors = array_merge($processors, $additionalProcessors);
-        }
+        $processors = array_values($this->processors);
 
         return array("processors" => $processors);
     }
@@ -87,16 +99,18 @@ class RestEndpoints
         }
         
         // the class name of the processor and the filename that it lives in need to be the same
-        $processorClassName = $_REQUEST["processorName"];
+        $processorName = $_REQUEST["processorName"];
+
+        $processorDetails = $this->processors[$processorName];
 
         $batchSize = empty($_REQUEST["batchSize"]) ? 1 : $_REQUEST["batchSize"];
         
         // try loading the file. Its in the processors folder below the current folder
         // TODO: extend this functionality so that other developers can write their own processors and host them anywhere
-        require_once plugin_dir_path(__FILE__) . "processors/" . $processorClassName . ".php";
+        require_once $processorDetails["classFilePath"];
 
         // determine which base class the processor implements
-        $processorClassFullName = "jamesc\\plugins\\postsProcessor\\processors\\" . $processorClassName;
+        $processorClassFullName = $processorDetails["className"];
 
         // get the next item to process
         $postsToProcess = PostsToProcessRepository::getPosts($batchSize);
