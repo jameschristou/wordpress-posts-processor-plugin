@@ -1,6 +1,5 @@
 import './sass/style.scss';
 
-import './js/index';
 import AppComponent from './components/App';
 import React from 'react';
 import ReactDOM from 'react-dom';
